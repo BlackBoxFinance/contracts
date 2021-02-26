@@ -9,7 +9,7 @@
   \::/  /   \:\__\     /:/  /   \:\__\    |:|  |    \::/  /   \::/  /   |::|__|
    \/__/     \/__/     \/__/     \/__/     \|__|     \/__/     \/__/     \/__/
 
-BlackBox - Perpetual Reflect Lottery
+BlackBox - Perpetual Trading Lottery
 
 */
 
