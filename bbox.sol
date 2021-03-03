@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 
 /*
-    ___       ___       ___       ___       ___       ___       ___       ___
-   /\  \     /\__\     /\  \     /\  \     /\__\     /\  \     /\  \     /\__\
-  /::\  \   /:/  /    /::\  \   /::\  \   /:/ _/_   /::\  \   /::\  \   |::L__L
+    ___       ___       ___       ___       ___       ___       ___       ___   
+   /\  \     /\__\     /\  \     /\  \     /\__\     /\  \     /\  \     /\__\  
+  /::\  \   /:/  /    /::\  \   /::\  \   /:/ _/_   /::\  \   /::\  \   |::L__L 
  /::\:\__\ /:/__/    /::\:\__\ /:/\:\__\ /::-"\__\ /::\:\__\ /:/\:\__\ /::::\__\
  \:\::/  / \:\  \    \/\::/  / \:\ \/__/ \;:;-",-" \:\::/  / \:\/:/  / \;::;/__/
-  \::/  /   \:\__\     /:/  /   \:\__\    |:|  |    \::/  /   \::/  /   |::|__|
-   \/__/     \/__/     \/__/     \/__/     \|__|     \/__/     \/__/     \/__/
+  \::/  /   \:\__\     /:/  /   \:\__\    |:|  |    \::/  /   \::/  /   |::|__| 
+   \/__/     \/__/     \/__/     \/__/     \|__|     \/__/     \/__/     \/__/  
 
-BlackBox - Perpetual Trading Lottery
+BlackBox - Perpetual Reflect Lottery
 
 */
 
@@ -51,7 +51,7 @@ contract BlackBox is Context, IBEP20, Ownable {
     uint256 public BBOXTaxAlloc = 8;
     uint256 public lpTaxAlloc;
     uint256 public totalTaxAlloc = BBOXTaxAlloc.add(holderTaxAlloc).add(lpTaxAlloc);
-    uint256 public BBOXcapacity = 1000;
+    uint256 public BBOXcapacity = 5000;
 
     address public BBOXAddress;
     address public lpStakingAddress;
@@ -72,7 +72,7 @@ contract BlackBox is Context, IBEP20, Ownable {
 
         excludeFromFees(address(0x000000000000000000000000000000000000dEaD));
     }
-
+    
     function name() external view override returns (string memory) {
         return NAME;
     }
@@ -95,7 +95,7 @@ contract BlackBox is Context, IBEP20, Ownable {
         }
         return tokenWithRewards(rewards[_account]);
     }
-
+    
     function getOwner() external view override returns (address) {
         return owner();
     }
@@ -137,11 +137,11 @@ contract BlackBox is Context, IBEP20, Ownable {
     function isExcludedFromFees(address _account) external view returns (bool) {
         return excludedFromFees[_account];
     }
-
+    
     function isExcludedFromBBOX(address _account) external view returns (bool) {
         return excludedFromBBOX[_account];
     }
-
+    
     function totalFees() external view returns (uint256) {
         return holderFeeTotal.add(BBOXFeeTotal).add(lpFeeTotal);
     }
@@ -206,23 +206,23 @@ contract BlackBox is Context, IBEP20, Ownable {
             }
         }
     }
-
+    
     function rand(uint256 maxNum) private view returns(uint256) {
         uint256 seed = uint256(keccak256(abi.encodePacked(
             block.timestamp + block.difficulty +
             ((uint256(keccak256(abi.encodePacked(block.coinbase)))) / (block.timestamp)) +
-            block.gaslimit +
+            block.gaslimit + 
             ((uint256(keccak256(abi.encodePacked(msg.sender)))) / (block.timestamp)) +
             block.number
         )));
-
+    
         return (seed - ((seed / maxNum) * maxNum));
     }
-
+    
     function pushJacksInBBOX(address _sender, address _recipient) private {
         require(_sender != address(0), "Cannot add zero address");
         require(_recipient != address(0), "Cannot add zero address");
-
+        
         if (excludedFromBBOX[_sender] && !excludedFromBBOX[_recipient]) {
             jacksInBBOX.push(_recipient);
         }
@@ -432,7 +432,7 @@ contract BlackBox is Context, IBEP20, Ownable {
     function _getLpFee(uint256 _tax) private view returns (uint256) {
         return _tax.mul(lpTaxAlloc).div(totalTaxAlloc);
     }
-
+    
     function getBBOXPoolAdds() public view returns (address[] memory) {
         return jacksInBBOX;
     }
@@ -459,7 +459,7 @@ contract BlackBox is Context, IBEP20, Ownable {
         excludeFromRewards(_BBOXAddress);
         excludeFromFees(_BBOXAddress);
     }
-
+    
     function setBBOXcapacity(uint256 capacity) external onlyOwner {
         BBOXcapacity = capacity;
     }
